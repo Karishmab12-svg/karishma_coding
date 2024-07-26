@@ -1,0 +1,32 @@
+---
+- name: Restart nginx
+  ansible.builtin.systemd:
+    name: nginx
+    state: restarted
+    enabled: yes
+
+- name: Check if Nginx is running
+  ansible.builtin.systemd:
+    name: nginx
+    state: started
+  register: nginx_status
+  failed_when: "'active (running)' not in nginx_status.status"
+
+- name: Send HTTP request to localhost
+  ansible.builtin.uri:
+    url: http://localhost:80/
+    method: GET
+    return_content: yes
+    validate_certs: no
+  register: result
+
+- name: Validate HTTP response code is 200
+  ansible.builtin.assert:
+    that:
+      - result.status == 200
+    fail_msg: "The HTTP response code was not 200. Actual response code: {{ result.status }}"
+    success_msg: "The HTTP response code was 200."
+
+- name: Display HTTP response content
+  debug:
+    msg: "Response content: {{ result.content }}"

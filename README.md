@@ -1,31 +1,26 @@
-Instructions to Deploy
 
-Generate a Self-Signed SSL Certificate:
-```
-sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt
-sudo openssl dhparam -out /etc/nginx/dhparam.pem 2048
-```
+# SRE CHALLENGE
+## Instructions to Deploy
 
-2.	Install Nginx:
+1. Ansible playbook to deploy the webserver and config
+
+- New WebServer setup
 ```
-sudo yum update -y
-sudo amazon-linux-extras install nginx1 -y
-sudo systemctl start nginx
-sudo systemctl enable nginx
+ansible-playbook playbook.yml  --tags setup, deploy --extra-vars="playbook_dir=`pwd`"
 ```
 
-3.	Configure Nginx:
-
-	•	Save the nginx.conf content to /etc/nginx/nginx.conf.
-	•	Save the index.html content to /usr/share/nginx/html/index.html.
-
-	4.	Restart Nginx:
+- Apply the src code changes
 ```
-sudo systemctl restart nginx
+ansible-playbook playbook.yml  --tags deploy --extra-vars="playbook_dir=`pwd`"
 ```
 
+### Considerations
 
-4. Ansible playbook to deploy the webserver and config
-```
-ansible-playbook playbook.yml --extra-vars="playbook_dir=`pwd`"
-```
+1. Created self-signed certificates with url test.kfc.com
+2. Deploy directory /var/www/kfc/
+
+
+### Testing
+After code is deployed, below checks will be done against localhost
+1. Check and Validate nginx service status
+2. Hit the localhost and should get `200` response code

@@ -2,5 +2,9 @@
 - hosts: webservers
   gather_facts: no
   become: yes
-  roles:
-    - role: webserver
+  tasks:
+    - role: webserver_setup
+      tags: setup
+  
+    - role: deploy
+      tags: deploy

@@ -1,0 +1,7 @@
+---
+# tasks file for webserver
+- name: Deploy the code
+  include_tasks: deploy.yml
+
+- name: Testing the website
+  include_tasks: checks.yml
