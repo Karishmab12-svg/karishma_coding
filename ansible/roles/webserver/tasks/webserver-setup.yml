@@ -27,8 +27,8 @@
     dest: /etc/nginx/ssl/
     mode: '0644'
   with_items:
-    - ../ssl/test.kfc.com.crt
-    - ../ssl/test.kfc.com.key
+    - "{{ src_dir }}/test.kfc.com.crt"
+    - "{{ src_dir }}/test.kfc.com.key"
 
 - name: Generate DH Parameters with a different size (2048 bits)
   community.crypto.openssl_dhparam:
@@ -37,6 +37,6 @@
 
 - name: Copy nginx.conf to server.
   ansible.builtin.copy:
-    src: ../nginx/nginx.conf
+    src: "{{ nginx_dir }}/nginx.conf"
     dest: /etc/nginx/nginx.conf
     mode: '0644'

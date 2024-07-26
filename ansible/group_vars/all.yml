@@ -1,2 +1,4 @@
 ---
 src_dir: "{{ playbook_dir }}/../src/"
+ssl_dir: "{{ playbook_dir }}/../ssl/"
+nginx_dir: "{{ playbook_dir }}/../nginx/"
