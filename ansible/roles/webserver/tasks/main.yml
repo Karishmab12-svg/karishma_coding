@@ -1,0 +1,8 @@
+---
+# tasks file for webserver
+- name: Setup webserver
+  include_tasks: webserver-setup.yml
+
+- name: Deploy the code
+  include_tasks: webserver-config.yml
+

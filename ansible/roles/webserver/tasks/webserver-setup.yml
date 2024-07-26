@@ -1,0 +1,42 @@
+- name: Install nginx
+  ansible.builtin.yum:
+    name: nginx
+    state: present
+    update_cache: yes
+- name: Start nginx
+  ansible.builtin.systemd:
+    name: nginx
+    state: started
+    enabled: true
+
+- name: Create ssl directory if it does not exist
+  ansible.builtin.file:
+    path: /etc/nginx/ssl
+    state: directory
+    mode: '0755'
+
+- name: Create KFC directory if it does not exist
+  ansible.builtin.file:
+    path: /var/www/kfc
+    state: directory
+    mode: '0755'
+
+- name: Copy certs to server.
+  ansible.builtin.copy:
+    src: {{ item }}
+    dest: /etc/nginx/ssl/
+    mode: '0644'
+  with_items:
+    - ../ssl/test.kfc.com.crt
+    - ../ssl/test.kfc.com.key
+
+- name: Generate DH Parameters with a different size (2048 bits)
+  community.crypto.openssl_dhparam:
+    path: /etc/nginx/ssl/dhparams.pem
+    size: 2048
+
+- name: Copy nginx.conf to server.
+  ansible.builtin.copy:
+    src: ../nginx/nginx.conf
+    dest: /etc/nginx/nginx.conf
+    mode: '0644'

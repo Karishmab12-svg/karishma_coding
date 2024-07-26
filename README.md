@@ -23,3 +23,9 @@ sudo systemctl enable nginx
 ```
 sudo systemctl restart nginx
 ```
+
+
+4. Ansible playbook to deploy the webserver and config
+```
+ansible-playbook playbook.yml --extra-vars="playbook_dir=`pwd`"
+```

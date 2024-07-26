@@ -1,0 +1,6 @@
+---
+### Code deploy instructions go here, As of now if there is any update on index.html. File gets copied to webserver.
+- name: Update index.html
+  ansible.builtin.copy:
+    src: "{{ src_dir }}"
+    dest: /var/www/kfc/
